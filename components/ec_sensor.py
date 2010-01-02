@@ -24,3 +24,9 @@ def take_reading():
         tempval = (0.0000060954 * pow(temp,2)) + (0.00690983 * temp) + 20.9983
         ecval = (0.0023 * pow(ec,2)) - (12.6 * ec) + 17520.1
     return tempval, ecval
+
+def get_water_temperature():
+    return take_reading()[0]
+
+def get_ec():
+    return take_reading()[1]
