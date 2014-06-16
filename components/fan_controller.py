@@ -5,7 +5,7 @@ import pins
 import sys
 
 def set_fans(on):
-    spot_gpio.set_pin(pins.GPIO_PlANT_FAN, on)
+    spot_gpio.set_pin(pins.GPIO_PLANT_FAN, on)
     spot_gpio.set_pin(pins.GPIO_EPS_FAN, on)
 
 

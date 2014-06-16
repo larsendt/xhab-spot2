@@ -22,7 +22,7 @@ def open_curtain():
     rotate(pins.GPIO_DOOR_MOTOR_OPEN, ROTATE_TIME)
 
 
-def close_curtian():
+def close_curtain():
     rotate(pins.GPIO_DOOR_MOTOR_CLOSE, ROTATE_TIME)
 
 

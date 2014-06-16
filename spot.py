@@ -3,6 +3,7 @@ import sys
 import time
 import components
 import json
+import traceback
 
 
 def cf(val, _min, _max):
@@ -11,6 +12,7 @@ def cf(val, _min, _max):
         raise ValueError("Value %s is out of range (%s, %s)" % (v, _min, _max))
     else:
         return v
+
 
 def sbool(v):
     if v == "True" or v == "true":
@@ -72,7 +74,36 @@ def config(key, value):
 def do_command(key, value):
     if key == "take_picture":
         data = components.camera_controller.latest_base64()
-        d = {"message":"took a picture", "error":False, "data":data}
+        d = {"message":"Took a picture", "error":False, "data":data}
+        print json.dumps(d)
+    elif key == "white_light_power":
+        components.light_controller.set_white_lights(value)
+        d = {"message":"Set white lights to '%s'" % value,
+             "data":None,
+             "error":False}
+        print json.dumps(d)
+    elif key == "red_light_power":
+        components.light_controller.set_red_lights(value)
+        d = {"message":"Set red lights to '%s'" % value,
+             "data":None,
+             "error":False}
+        print json.dumps(d)
+    elif key == "enclosure":
+        if value == True:
+            components.curtain_controller.open_curtain()
+            msg = "Opened enclosure"
+        else:
+            components.curtain_controller.close_curtain()
+            msg = "Closed enclosure"
+        d = {"message":msg,
+             "data":None,
+             "error":False}
+        print json.dumps(d)
+    elif key == "fan_power":
+        components.fan_controller.set_fans(value)
+        d = {"message":"set fans to '%s'" % value,
+             "data":None,
+             "error":False}
         print json.dumps(d)
     else:
         d = {"message":"command %s is not yet implemented" % key,
@@ -118,4 +149,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        d = {"message":"A server error occured",
+             "data":traceback.format_exc(e),
+             "error":True}
+        print d["data"]
+        print json.dumps(d)
